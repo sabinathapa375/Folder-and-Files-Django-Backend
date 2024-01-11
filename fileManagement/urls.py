@@ -7,6 +7,7 @@ urlpatterns = [
     path('users/', UserListView.as_view(), name = 'users'),
     path('files/<int:pk>/', FileViewSet.as_view(), name='file-delete'),
     path('admin-file-list/', AdminListFile.as_view(), name='admin-file-list'),
-    path('auth', include('rest_framework.urls', namespace='rest_framework')),
+    
+    
 ]
 

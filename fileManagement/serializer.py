@@ -22,8 +22,7 @@ class FolderSerializer(serializers.ModelSerializer):
 
         
 
-    # def validate_file_type(self, value):
-    #     return value
+     
      
     
 

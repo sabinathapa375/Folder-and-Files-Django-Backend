@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from .permission import IsOwnerOfFile
 from accounts.serializers import UserSerializer
 
-class FolderList(generics.ListAPIView):
+class FolderList(generics.ListCreateAPIView):
     queryset = Folder.objects.filter(parent_folder=None)
     serializer_class = FolderSerializer
     permission_classes = [IsAuthenticated]
@@ -45,7 +45,21 @@ class FileViewSet(generics.ListCreateAPIView, generics.DestroyAPIView):
                         folder_id = folder_id)                
         file.save()
         return Response(status=status.HTTP_201_CREATED) 
-     
+    
+    def get(self, request):
+        user_id = self.request.user
+        client_files = File.objects.filter(user_id = user_id)
+        cpa_files = File.objects.filter(for_user_id=user_id)
+        
+        client_serializer = FileSerializer(client_files, many=True)
+        cpa_serializer = FileSerializer(cpa_files, many=True)
+        
+        return Response({
+                 
+                "client_files": client_serializer.data,
+                "cpa_files": cpa_serializer.data
+            })
+        
     def destroy(self, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
@@ -99,6 +113,9 @@ class AdminListFile(APIView):
                 "users": users_serializer.data,
                 "files": serializer.data
             })
+ 
+    
+    
     
 
  
