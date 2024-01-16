@@ -59,15 +59,6 @@ class LoginAPIView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         
-class LogoutView(APIView):
-    def post(self, request):
-        try:
-            refresh_token = request.data['refresh_token']
-            if refresh_token:
-                token = RefreshToken(refresh_token)
-                token.blacklist()
-            return Response("Logout Successful", status=status.HTTP_200_OK)
-        except TokenError:
-            raise AuthenticationFailed("Invalid Token")
+ 
         
  
